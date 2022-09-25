@@ -6,6 +6,8 @@
 
 https://www.eclipse.org/downloads/download.php
 
+https://blog.csdn.net/anxinlong/article/details/109190867
+
 下载安装ant
 
 https://ant.apache.org/
@@ -23,6 +25,7 @@ https://ant.apache.org/
 ![img_1.png](img_1.png)
 
 
+https://dev.mysql.com/doc/connectors/en/connector-j-installing-source.html
 
 
 https://blog.csdn.net/phenixyf/article/details/52515598
