@@ -45,6 +45,9 @@ import java.util.Timer;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Supplier;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mysql.cj.conf.HostInfo;
 import com.mysql.cj.conf.PropertyKey;
 import com.mysql.cj.conf.PropertySet;
@@ -80,6 +83,8 @@ import com.mysql.cj.result.ValueFactory;
 import com.mysql.cj.util.StringUtils;
 
 public class NativeSession extends CoreSession implements Serializable {
+
+    private static Logger logger = LoggerFactory.getLogger(NativeSession.class);
 
     private static final long serialVersionUID = 5323638898749073419L;
 
@@ -724,6 +729,7 @@ public class NativeSession extends CoreSession implements Serializable {
 
     public void ping(boolean checkForClosedConnection, int timeoutMillis) {
         if (checkForClosedConnection) {
+            logger.info("开始检查连接是否关闭 {}", checkForClosedConnection);
             checkClosed();
         }
 
@@ -760,8 +766,8 @@ public class NativeSession extends CoreSession implements Serializable {
             }
             throw ExceptionFactory.createException(ConnectionIsClosedException.class, Messages.getString("Connection.2"), this.forceClosedReason,
                     getExceptionInterceptor());
-        }else{
-//            this.log.logInfo(String.f"mysql连接没有关闭");
+        } else {
+            //            this.log.logInfo(String.f"mysql连接没有关闭");
         }
     }
 
