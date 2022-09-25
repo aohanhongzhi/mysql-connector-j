@@ -760,6 +760,8 @@ public class NativeSession extends CoreSession implements Serializable {
             }
             throw ExceptionFactory.createException(ConnectionIsClosedException.class, Messages.getString("Connection.2"), this.forceClosedReason,
                     getExceptionInterceptor());
+        }else{
+//            this.log.logInfo(String.f"mysql连接没有关闭");
         }
     }
 
