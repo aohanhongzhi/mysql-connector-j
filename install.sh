@@ -1,0 +1,2 @@
+mvn install:install-file -Dfile=build/mysql-connector-java-8.0.30-SNAPSHOT/mysql-connector-java-8.0.30-SNAPSHOT.jar -DgroupId=mysql -DartifactId=mysql-connector-java -Dversion=8.0.30-SNAPSHOT -Dpackaging=jar
+mvn install:install-file -Dfile=dist/toArchive/mysql-connector-java-8.0.30-SNAPSHOT-maven-bundle/mysql-connector-java-8.0.30-SNAPSHOT-sources.jar -DgroupId=mysql -DartifactId=mysql-connector-java -Dversion=8.0.30-SNAPSHOT -Dpackaging=jar  -Dclassifier=sources
