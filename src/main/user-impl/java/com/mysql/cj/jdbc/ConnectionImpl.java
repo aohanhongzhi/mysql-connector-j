@@ -56,6 +56,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mysql.cj.CacheAdapter;
 import com.mysql.cj.CacheAdapterFactory;
 import com.mysql.cj.LicenseConfiguration;
@@ -105,6 +108,8 @@ import com.mysql.cj.util.Util;
  * </p>
  */
 public class ConnectionImpl implements JdbcConnection, SessionEventListener, Serializable {
+
+    private static Logger logger = LoggerFactory.getLogger(ConnectionImpl.class);
 
     private static final long serialVersionUID = 4009476458425101761L;
 
@@ -2536,6 +2541,7 @@ public class ConnectionImpl implements JdbcConnection, SessionEventListener, Ser
     public boolean isValid(int timeout) throws SQLException {
         synchronized (getConnectionMutex()) {
             if (isClosed()) {
+                logger.info("数据库连接关闭了");
                 return false;
             }
 
@@ -2547,18 +2553,19 @@ public class ConnectionImpl implements JdbcConnection, SessionEventListener, Ser
                         abortInternal();
                     } catch (Throwable ignoreThrown) {
                         // we're dead now anyway
+                        logger.error("连接无效0", ignoreThrown);
                     }
-                    System.out.println("连接无效1");
+                    logger.error("连接无效1", t);
 
                     return false;
                 }
 
             } catch (Throwable t) {
-                System.out.println("连接无效2");
+                logger.error("连接无效2", t);
 
                 return false;
             }
-            System.out.println("连接有效");
+            logger.info("pingInternal正常，数据库连接有效");
             return true;
         }
     }
