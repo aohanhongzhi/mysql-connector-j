@@ -78,6 +78,9 @@ import java.util.Optional;
 import java.util.TimeZone;
 import java.util.function.Supplier;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mysql.cj.BindValue;
 import com.mysql.cj.CharsetMapping;
 import com.mysql.cj.Constants;
@@ -153,6 +156,8 @@ import com.mysql.cj.util.TimeUtil;
 import com.mysql.cj.util.Util;
 
 public class NativeProtocol extends AbstractProtocol<NativePacketPayload> implements Protocol<NativePacketPayload>, RuntimePropertyListener {
+
+    private static Logger logger = LoggerFactory.getLogger(NativeProtocol.class);
 
     protected static final int INITIAL_PACKET_SIZE = 1024;
     protected static final int COMP_HEADER_LENGTH = 3;
@@ -716,7 +721,21 @@ public class NativeProtocol extends AbstractProtocol<NativePacketPayload> implem
         } finally {
             if (timeoutMillis != 0) {
                 try {
-                    this.socketConnection.getMysqlSocket().setSoTimeout(oldTimeout);
+                    if (this.socketConnection != null) {
+                        Socket socket = this.socketConnection.getMysqlSocket();
+                        if (socket != null) {
+                            logger.info("超时时间:{}ms ,oldTimeout:{}ms, 当前this.socketConnection = {} , socket={}", timeoutMillis, oldTimeout,
+                                    this.socketConnection, socket);
+                        } else {
+                            logger.error("超时时间:{}ms ,oldTimeout:{}ms, 当前this.socketConnection = {} , socket为空={}", timeoutMillis, oldTimeout,
+                                    this.socketConnection, socket);
+                        }
+
+                        socket.setSoTimeout(oldTimeout);
+                    } else {
+                        logger.error("this.socketConnection 是空的 {}", this.socketConnection);
+                    }
+
                 } catch (IOException e) {
                     throw ExceptionFactory.createCommunicationsException(this.propertySet, this.serverSession, this.getPacketSentTimeHolder(),
                             this.getPacketReceivedTimeHolder(), e, getExceptionInterceptor());
