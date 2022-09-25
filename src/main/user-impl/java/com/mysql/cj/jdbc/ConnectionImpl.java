@@ -2548,14 +2548,17 @@ public class ConnectionImpl implements JdbcConnection, SessionEventListener, Ser
                     } catch (Throwable ignoreThrown) {
                         // we're dead now anyway
                     }
+                    System.out.println("连接无效1");
 
                     return false;
                 }
 
             } catch (Throwable t) {
+                System.out.println("连接无效2");
+
                 return false;
             }
-
+            System.out.println("连接有效");
             return true;
         }
     }
